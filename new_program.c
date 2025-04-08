@@ -5,8 +5,6 @@ int main (int argc, char *argv[]) {
     char nombres[5][10];
     char materias[3][10];
     float notas[5][3];
-    float notas2[5];
-    float notas3[5];
     int cont = 0,opc,len;
 
     printf("REGISTRO DE MATERIAS\n");
@@ -49,8 +47,8 @@ int main (int argc, char *argv[]) {
             case 2:
                 if(cont>=1){
                     printf("Notas\t\t%s\t\t%s\t\t%s\n",materias[0],materias[1],materias[2]);
-                    for (int i = 0; i <= cont; i++){
-                        printf("%s\t\t%f\t\t%f\t\t%f",nombres[i],notas[i][0],notas[i][1],notas[i][3]);
+                    for (int i = 0; i < cont; i++){
+                        printf("%s\t\t%.2f\t\t%.2f\t\t%.2f\n",nombres[i],notas[i][0],notas[i][1],notas[i][2]);
                     }
                 }
                 break;
