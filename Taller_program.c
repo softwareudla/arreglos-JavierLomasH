@@ -14,6 +14,8 @@ int main (int argc, char *argv[]){
     while(cont<3){
         printf("Ingrese el nombre de la materia %d: ", cont+1);
         fgets(materias[cont], sizeof materias[cont], stdin);
+        len=strlen(materias[cont])-1;
+        materias[cont][len]='\0';
         cont++;
     }    
     cont=0;
@@ -39,7 +41,7 @@ int main (int argc, char *argv[]){
 
                     for (int i = 0; i < 3; i++){
                         while(1){
-                            printf("Ingrese calificacion de %s",materias[i]);        
+                            printf("Ingrese calificacion de %s: ",materias[i]);        
                             if (scanf("%f", &notas[cont][i]) == 1 && notas[cont][i] >= 0 && notas[cont][i] <= 10){
                                 break;
                             }        
