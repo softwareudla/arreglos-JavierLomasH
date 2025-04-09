@@ -2,8 +2,8 @@
 #include <string.h>
 
 int main (int argc, char *argv[]){
-    char nombres[5][10];
-    char materias[3][10];
+    char nombres[5][30];
+    char materias[3][30];
     float notas[5][3];
     int opc,len,cont=0;
     float promedio[3];
@@ -13,7 +13,7 @@ int main (int argc, char *argv[]){
     printf("REGISTRO DE MATERIAS\n");
     while(cont<3){
         printf("Ingrese el nombre de la materia %d: ", cont+1);
-        scanf("%s", &materias[cont]);
+        fgets(materias[cont], sizeof materias[cont], stdin);
         cont++;
     }    
     cont=0;
@@ -33,13 +33,19 @@ int main (int argc, char *argv[]){
                 if(cont<5){        
                     printf("Ingrese el nombre de la estudiante %d: ", cont+1);
                     while(getchar() != '\n'); //Forma diferente de limiar el buffer
-                    fgets(nombres[cont], 10, stdin);
+                    fgets(nombres[cont],sizeof nombres[cont] , stdin);
                     len=strlen(nombres[cont])-1;
                     nombres[cont][len]='\0';
 
                     for (int i = 0; i < 3; i++){
-                        printf("Ingrese calificacion de %s: ",materias[i]);
-                        scanf("%f", &notas[cont][i]);
+                        while(1){
+                            printf("Ingrese calificacion de %s",materias[i]);        
+                            if (scanf("%f", &notas[cont][i]) == 1 && notas[cont][i] >= 0 && notas[cont][i] <= 10){
+                                break;
+                            }        
+                            printf("Nota invalida.\nIntente nuevamente: \n");        
+                            while (getchar() != '\n'); 
+                        }
                     }
                     cont++;
                 }else{
