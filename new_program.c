@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 
-int main (int argc, char *argv[]) {
+int main (int argc, char *argv[]){
     char nombres[5][10];
     char materias[3][10];
     float notas[5][3];
-    int cont = 0,opc,len;
+    int opc,len,cont=0;
+    float promedio[3];
+    int alta=0, baja=0;
+    int aprobados=0, reprobados=0;
 
     printf("REGISTRO DE MATERIAS\n");
     while(cont<3){
@@ -18,11 +21,10 @@ int main (int argc, char *argv[]) {
         printf("___________________________\n");
         printf("Seleccione opcion:\n");
         printf("1. Registrar estudiante y notas\n");
-        printf("2. Cambiar notas de estudiante\n");
-        printf("3. Promedio por materia/estudiante\n");
-        printf("4. Calificaciones altas y bajas\n");
-        printf("5. Aprobados y reprobados por materia\n");
-        printf("6. Salir\n");
+        printf("2. Ver notas y promedios\n");
+        printf("3. Calificaciones altas y bajas\n");
+        printf("4. Aprobados y reprobados por materia\n");
+        printf("5. Salir\n");
         printf("___________________________\n");
         printf(">> ");
         scanf("%d",&opc);
@@ -30,7 +32,7 @@ int main (int argc, char *argv[]) {
             case 1:
                 if(cont<5){        
                     printf("Ingrese el nombre de la estudiante %d: ", cont+1);
-                    fflush(stdin);                    
+                    while(getchar() != '\n'); //Forma diferente de limiar el buffer
                     fgets(nombres[cont], 10, stdin);
                     len=strlen(nombres[cont])-1;
                     nombres[cont][len]='\0';
@@ -46,17 +48,114 @@ int main (int argc, char *argv[]) {
                 break;
             case 2:
                 if(cont>=1){
-                    printf("Notas\t\t%s\t\t%s\t\t%s\n",materias[0],materias[1],materias[2]);
+                    printf("Notas\t\t%s\t\t%s\t\t%s\t\tP.Estudiante.\n",materias[0],materias[1],materias[2]);
                     for (int i = 0; i < cont; i++){
-                        printf("%s\t\t%.2f\t\t%.2f\t\t%.2f\n",nombres[i],notas[i][0],notas[i][1],notas[i][2]);
+                        printf("%s\t\t%.2f\t\t%.2f\t\t%.2f\t\t%.2f\n",nombres[i],notas[i][0],notas[i][1],notas[i][2],(notas[i][0]+notas[i][1]+notas[i][2])/3);
+                    }
+                    for(int i=0;i<3;i++){
+                        promedio[i]=0;
+                        for(int j=0;j<cont;j++){
+                            promedio[i]+=notas[j][i];
+                        }
+                        promedio[i]/=cont;
+                    }
+                    printf("P.Materia.\t%.2f\t\t%.2f\t\t%.2f\n",promedio[0],promedio[1],promedio[2]);
+                }else{
+                    printf("No hay estudiantes registrados\n");
+                }               
+
+                break;
+            case 3:
+                printf("Notas\t\t%s\t\t%s\t\t%s\n",materias[0],materias[1],materias[2]);
+                printf("Altas\t\t");
+                for (int i = 0; i < 3; i++){
+                    for (int j = 0; j < cont; j++){
+                        if(notas[j][i]>notas[alta][i]){
+                            alta=j;
+                        }
+                    }
+                    printf("%s:%.2f\t\t",nombres[alta],notas[alta][i]);
+                }
+                printf("\nBajas\t\t");
+                for (int i = 0; i < 3; i++){
+                    for (int j = 0; j < cont; j++){
+                        if(notas[j][i]<notas[baja][i]){
+                            baja=j;
+                        }
+                    }
+                    printf("%s:%.2f\t\t",nombres[baja],notas[baja][i]);
+                }
+                printf("\n");
+                break;
+
+            case 4:
+                printf("APROBADOS\n");
+                printf("%s: ", materias[0]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][0]>=6){
+                        printf("%s, ", nombres[i]);
+                        aprobados++;
                     }
                 }
-                break;
+                printf("=%d\n",aprobados);
+                aprobados=0;
+
+                printf("%s: ", materias[1]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][1]>=6){
+                        printf("%s, ", nombres[i]);
+                        aprobados++;
+                    }
+                }
+                printf("=%d\n",aprobados);
+                aprobados=0;
+
+                printf("%s: ", materias[2]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][2]>=6){
+                        printf("%s, ", nombres[i]);
+                        aprobados++;
+                    }
+                }
+                printf("=%d\n",aprobados);
+                aprobados=0;
+                
+                printf("REPROBADOS\n");
+                printf("%s: ", materias[0]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][0]<6){
+                        printf("%s, ", nombres[i]);
+                        reprobados++;
+                    }
+                }
+                printf("=%d\n",reprobados);
+                reprobados=0;
+
+                printf("%s: ", materias[1]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][1]<6){
+                        printf("%s, ", nombres[i]);
+                        reprobados++;
+                    }
+                }
+                printf("=%d\n",reprobados);
+                reprobados=0;
+
+                printf("%s: ", materias[2]);
+                for (int i = 0; i < cont; i++){
+                    if(notas[i][2]<6){
+                        printf("%s, ", nombres[i]);
+                        reprobados++;
+                    }
+                }
+                printf("=%d\n",reprobados);
+                reprobados=0;
+
             default:
                 break;
             }
 
-    }while(opc!=6);
+    }while(opc!=5);
 
     return 0;
 }
